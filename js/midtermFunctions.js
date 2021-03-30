@@ -1,3 +1,8 @@
+/*=============== 
+Map setup
+================*/
+
+
 var map = L.map('map', {
     center: [40.000, -75.1090],
     zoom: 11
@@ -9,6 +14,19 @@ var map = L.map('map', {
     maxZoom: 20,
     ext: 'png'
   }).addTo(map);
+
+
+/*===============
+Slides Setup
+=================*/
+var slideExample = {
+    slideNumber: 1,
+    title: "My first slide",
+    filter: function(geojsonFeature) { return true }
+  };
+
+
+
 
 var dataset = "https://raw.githubusercontent.com/Xy16-5/CPLN692-Midterm/main/crashes.geojson";
 var featureGroup;
