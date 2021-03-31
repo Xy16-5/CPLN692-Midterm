@@ -19,30 +19,38 @@ var map = L.map('map', {
 /*===============
 Slides Setup
 =================*/
-var slideExample = {
-    slideNumber: 1,
-    title: "My first slide",
-    filter: function(geojsonFeature) { return true }
-  };
+//var slide1 = {
+//    slideNumber: 1,
+//    title: "Overview of crashes in Philadelphia (2017) ",
+//    filter: filter1
+//  };
+
+//var slide2 = {
+//  slideNumber: 2,
+
+//}
 
 
 
-
+/*================
+Data Processing
+==================*/
 var dataset = "https://raw.githubusercontent.com/Xy16-5/CPLN692-Midterm/main/crashes.geojson";
 var featureGroup;
+
+var myStyle
 
 
 $(document).ready(function() {
     $.ajax(dataset).done(function(data) {
       var parsedData = JSON.parse(data);
-      featureGroup = L.geoJson(parsedData, {
-        style: myStyle,
-        filter: myFilter
-      }).addTo(map);
-      var counts = _.countBy(parsedData.features, function(feature){
-        return feature.properties.COLLDAY
-      })
+      console.log(parsedData);
+//      featureGroup = L.geoJson(parsedData, {
+//        style: myStyle,
+//        filter: myFilter
+//      }).addTo(map);
+//      })
       // quite similar to _.each
-      featureGroup.eachLayer(eachFeatureFunction);
+//      featureGroup.eachLayer(eachFeatureFunction);
     });
   });
