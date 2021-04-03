@@ -19,16 +19,53 @@ var map = L.map('map', {
 /*===============
 Slides Setup
 =================*/
-//var slide1 = {
-//    slideNumber: 1,
-//    title: "Overview of crashes in Philadelphia (2017) ",
-//    filter: filter1
-//  };
 
-//var slide2 = {
-//  slideNumber: 2,
 
-//}
+var slide1 = {
+    slideNumber: 1,
+    title: "Overview of crashes in Philadelphia (2017) ",
+    content:"content1",
+    bbox: [[ 39.88682114233502,  -75.25772094726562],[40.02603705467397, -75.02151489257812]]
+  };
+
+  var slide2 = {
+    slideNumber: 2,
+    title: "title 2 ",
+    content:"content2",
+    bbox: [[ 39.88682114233502,  -75.25772094726562],[40.02603705467397, -75.02151489257812]]
+  };
+
+  var slides =[slide1,slide2];
+  var currentPage = 0
+
+
+
+var nextPage = function() {
+  // event handling for proceeding forward in slideshow
+}
+var prevPage = function() {
+  // event handling for going backward in slideshow
+}
+
+var buildPage = function(pageDefinition) {
+  featureGroup = L.geoJson(parsedData,{
+    pointToLayer: function(feature,latlng){
+      return L.circleMarker(latlng,geojsonMarkerOptions);
+    }
+  });
+  clusters = L.markerClusterGroup();
+  clusters.addLayer(featureGroup);
+  map.addLayer(clusters);
+  // build up a 'slide' given a page definition
+  $("#title").text(pageDefinition.title);
+  $("#content").text(pageDefinition.content);
+  map.fitBounds(pageDefinition.bbox);
+}
+
+var tearDown = function() {
+  // remove all plotted data in prep for building the page with new filters etc
+  map.removeLayer(clusters);
+}
 
 
 
@@ -36,19 +73,25 @@ Slides Setup
 Data Processing
 ==================*/
 var dataset = "https://raw.githubusercontent.com/Xy16-5/CPLN692-Midterm/main/crashes.geojson";
+var parsedData;
 var featureGroup;
+var clusters;
 
-var myStyle
+var myStyle;
+var geojsonMarkerOptions = {
+  radius: 4,
+  fillColor: "#ff7800",
+  color: "#000",
+  weight: 1,
+  opacity: 1,
+  fillOpacity: 0.8
+};
 
 
 $(document).ready(function() {
     $.ajax(dataset).done(function(data) {
-      var parsedData = JSON.parse(data);
-      console.log(parsedData);
-//      featureGroup = L.geoJson(parsedData, {
-//        style: myStyle,
-//        filter: myFilter
-//      }).addTo(map);
+      parsedData = JSON.parse(data);
+      
 //      })
       // quite similar to _.each
 //      featureGroup.eachLayer(eachFeatureFunction);
