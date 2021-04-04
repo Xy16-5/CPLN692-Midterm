@@ -24,7 +24,7 @@ Slides Setup
 var slide1 = {
     slideNumber: 1,
     title: "Overview of Crashes in Philadelphia (2017) ",
-    content:"The project is a gateway to the Philadelphia crash statistics in 2017. Here you could have an overall understanding of when, why and how severe the crashes are. On the last page, you could find the specific crashes based on the conditions you put in.",
+    content:"The project is a gateway to the Philadelphia crash statistics in 2017. Here you could have an overall understanding of when, why and how severe the crashes are. On the last page, you could find the specific crashes based on the conditions you put in. In 2017, there are totally 9043 crashes in Philadelphia, which led to ",
     bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
     style: myStyle1
 
@@ -111,6 +111,9 @@ var featureGroup;
 var clusters;
 var markerlist;
 
+
+
+
 $(".nextbutton").click(nextPage)
 $(".previousbutton").click(prevPage)
 
@@ -128,7 +131,9 @@ var myStyle1 = {
 $(document).ready(function() {
   $.ajax(dataset).done(function(data) {
     parsedData = JSON.parse(data);
-    buildPage(slides[currentPage]);
+    buildPage(slides[currentPage]); 
+    var crashnumber = parsedData.features.length;
+    console.log("Total Crashes in 2017: ", crashnumber);
   });
 
   });
