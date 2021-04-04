@@ -23,7 +23,7 @@ Slides Setup
 
 var slide1 = {
     slideNumber: 1,
-    title: "Overview of crashes in Philadelphia (2017) ",
+    title: "Overview of Crashes in Philadelphia (2017) ",
     content:"content1",
     bbox: [[ 39.88682114233502,  -75.25772094726562],[40.02603705467397, -75.02151489257812]]
   };
@@ -42,12 +42,17 @@ var slide1 = {
 
 var nextPage = function() {
   // event handling for proceeding forward in slideshow
+  tearDown();
+  var nextPage = currentPage + 1 ;
+  buildPage(slides[nextPage]);
+  currentPage = nextPage;
 }
 var prevPage = function() {
   // event handling for going backward in slideshow
 }
 
 var buildPage = function(pageDefinition) {
+
   featureGroup = L.geoJson(parsedData,{
     pointToLayer: function(feature,latlng){
       return L.circleMarker(latlng,geojsonMarkerOptions);
@@ -76,6 +81,24 @@ var dataset = "https://raw.githubusercontent.com/Xy16-5/CPLN692-Midterm/main/cra
 var parsedData;
 var featureGroup;
 var clusters;
+var markerlist;
+
+var markers = function(feature){
+  markerlist = [];
+  _.each(feature,function(object){
+    var marker = L.circleMarker([object.geometry.coordinates[1],object.geometry.coordinates[0]]);
+    markerlist.push(marker)
+  });
+  return markerlist
+}
+
+var plotMarkers = function(markers){
+  _.each(markers,function(marker){
+    marker.addTo(map)
+  })
+
+}
+
 
 var myStyle;
 var geojsonMarkerOptions = {
@@ -89,11 +112,9 @@ var geojsonMarkerOptions = {
 
 
 $(document).ready(function() {
-    $.ajax(dataset).done(function(data) {
-      parsedData = JSON.parse(data);
-      
-//      })
-      // quite similar to _.each
-//      featureGroup.eachLayer(eachFeatureFunction);
-    });
+  $.ajax(dataset).done(function(data) {
+    parsedData = JSON.parse(data);
+    buildPage(slides[currentPage]);
+  });
+
   });
