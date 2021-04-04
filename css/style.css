@@ -93,3 +93,11 @@ p.main {
     background:linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
     background-color:#dfdfdf;
   }
+
+p,label {
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input {
+    margin: .4rem;
+}

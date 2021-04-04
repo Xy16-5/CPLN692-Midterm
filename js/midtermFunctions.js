@@ -20,11 +20,7 @@ var map = L.map('map', {
 Slides Setup
 =================*/
 
-var style1 = function(geojson){
-  return {
-    color: "green"
-  }
-}
+
 
 
 var slide1 = {
@@ -32,14 +28,56 @@ var slide1 = {
     title: "Overview of Crashes in Philadelphia (2017) ",
     content:"The project is a gateway to the Philadelphia crash statistics in 2017. Here you could have an overall understanding of when, why and how severe the crashes are. On the last page, you could find the specific crashes based on the conditions you put in. In 2017, there are totally 9043 crashes in Philadelphia, which led to 78 people death and 9661 injury. ",
     bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
-    style: style1()
+    filter: function(geojson){
+      return true
+    },
+    style: function(features){
+      if(features.properties.fatal > 0 || features.properties.injury >0 ){
+        return{
+          color: "red",
+          radius: 8,
+          fillOpacity: 0.85
+        }
+      }else {
+        return {
+          color: "green",
+          radius: 8,
+          fillOpacity: 0.85
+        }
+      }
+    }
   };
 
   var slide2 = {
     slideNumber: 2,
-    title: "Temporal Characteristics of Crashes ",
+    title: "Fatal Crashes",
     content:"content2",
-    bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]]
+    bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
+    filter: function(features){ 
+      if (document.getElementById("death").checked === true && document.getElementById("injury").checked === false){
+        return features.properties.fatal >0 
+      }else if(document.getElementById("death").checked === false && document.getElementById("injury").checked === true){
+        return features.properties.injury >0 
+      }else if (document.getElementById("death").checked === true && document.getElementById("injury").checked === true){
+        return features.properties.fatal >0 ||features.properties.injury >0 
+      }
+      
+    },
+    style: function(features){
+      if (features.properties.fatal === 1){
+        return{
+          color: "red",
+          radius: 8,
+          fillOpacity: 0.85
+        }
+      }else if(features.properties.fatal === 2){
+        return{
+          color: "darkred",
+          radius: 12,
+          fillOpacity: 0.85
+        }
+      }
+    }
   };
 
   var slide3 = {
@@ -71,12 +109,21 @@ var prevPage = function() {
   buildPage(slides[previousPage]);
 }
 
+var showhide = function(currentPage){
+  if (currentPage===1){
+    $("#filterslide2").show()
+  }else{
+    $("#filterslide2").hide()
+  }
+}
+
 var buildPage = function(pageDefinition) {
 
   featureGroup = L.geoJson(parsedData,{
-    style: pageDefinition.style,
+    filter: pageDefinition.filter,
+    style: pageDefinition.style ,
     pointToLayer: function(feature,latlng){
-      return new L.CircleMarker(latlng, {radius: 2,fillOpacity: 0.85 })
+      return new L.CircleMarker(latlng)
     }
   });
 
@@ -88,6 +135,7 @@ var buildPage = function(pageDefinition) {
     featureGroup.addTo(map);
   }
   // build up a 'slide' given a page definition
+  showhide(currentPage)
   $("#title").text(pageDefinition.title);
   $("#content").text(pageDefinition.content);
   map.fitBounds(pageDefinition.bbox);
@@ -106,6 +154,7 @@ var tearDown = function() {
   map.removeLayer(clusters);
   map.removeLayer(featureGroup)
 }
+
 
 
 
