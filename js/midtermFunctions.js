@@ -44,11 +44,17 @@ var nextPage = function() {
   // event handling for proceeding forward in slideshow
   tearDown();
   var nextPage = currentPage + 1 ;
-  buildPage(slides[nextPage]);
   currentPage = nextPage;
+  buildPage(slides[nextPage]);
 }
+
+
 var prevPage = function() {
   // event handling for going backward in slideshow
+  tearDown();
+  var previousPage = currentPage - 1 ;
+  currentPage = previousPage;
+  buildPage(slides[previousPage]);
 }
 
 var buildPage = function(pageDefinition) {
@@ -65,6 +71,14 @@ var buildPage = function(pageDefinition) {
   $("#title").text(pageDefinition.title);
   $("#content").text(pageDefinition.content);
   map.fitBounds(pageDefinition.bbox);
+
+  if (currentPage === slides.length - 1){
+    $(".nextbutton").prop("disabled", true)
+  }else{$(".nextbutton").prop("disabled", false)};
+
+  if (currentPage === 0){
+    $(".previousbutton").prop("disabled", true)
+  }else {$(".previousbutton").prop("disabled", false)}
 }
 
 var tearDown = function() {
@@ -83,21 +97,8 @@ var featureGroup;
 var clusters;
 var markerlist;
 
-var markers = function(feature){
-  markerlist = [];
-  _.each(feature,function(object){
-    var marker = L.circleMarker([object.geometry.coordinates[1],object.geometry.coordinates[0]]);
-    markerlist.push(marker)
-  });
-  return markerlist
-}
-
-var plotMarkers = function(markers){
-  _.each(markers,function(marker){
-    marker.addTo(map)
-  })
-
-}
+$(".nextbutton").click(nextPage)
+$(".previousbutton").click(prevPage)
 
 
 var myStyle;
