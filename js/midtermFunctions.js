@@ -35,7 +35,14 @@ var slide1 = {
     bbox: [[ 39.88682114233502,  -75.25772094726562],[40.02603705467397, -75.02151489257812]]
   };
 
-  var slides =[slide1,slide2];
+  var slide3 = {
+    slideNumber: 3,
+    title: "title 3 ",
+    content:"content3",
+    bbox: [[ 39.88682114233502,  -75.25772094726562],[40.02603705467397, -75.02151489257812]]
+  };
+
+  var slides =[slide1,slide2,slide3];
   var currentPage = 0
 
 
