@@ -20,24 +20,26 @@ var map = L.map('map', {
 Slides Setup
 =================*/
 
+var style1 = function(geojson){
+  return {
+    color: "green"
+  }
+}
+
 
 var slide1 = {
     slideNumber: 1,
     title: "Overview of Crashes in Philadelphia (2017) ",
     content:"The project is a gateway to the Philadelphia crash statistics in 2017. Here you could have an overall understanding of when, why and how severe the crashes are. On the last page, you could find the specific crashes based on the conditions you put in. In 2017, there are totally 9043 crashes in Philadelphia, which led to 78 people death and 9661 injury. ",
     bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
-    style: function(feature) {
-      return {
-        color: "green"
-      }
-    }
+    style: style1()
   };
 
   var slide2 = {
     slideNumber: 2,
     title: "Temporal Characteristics of Crashes ",
     content:"content2",
-    bbox: [[ 39.88682114233502,  -75.25772094726562],[40.02603705467397, -75.02151489257812]]
+    bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]]
   };
 
   var slide3 = {
