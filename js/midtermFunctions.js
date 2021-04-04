@@ -24,8 +24,10 @@ Slides Setup
 var slide1 = {
     slideNumber: 1,
     title: "Overview of Crashes in Philadelphia (2017) ",
-    content:"content1",
-    bbox: [[ 39.88682114233502,  -75.25772094726562],[40.02603705467397, -75.02151489257812]]
+    content:"The project is a gateway to the Philadelphia crash statistics in 2017. Here you could have an overall understanding of when, why and how severe the crashes are. On the last page, you could find the specific crash based on the conditions you put in.",
+    bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
+    style: myStyle1
+
   };
 
   var slide2 = {
@@ -68,12 +70,16 @@ var buildPage = function(pageDefinition) {
 
   featureGroup = L.geoJson(parsedData,{
     pointToLayer: function(feature,latlng){
-      return L.circleMarker(latlng,geojsonMarkerOptions);
+      return L.circleMarker(latlng,pageDefinition.style);
     }
   });
-  clusters = L.markerClusterGroup();
-  clusters.addLayer(featureGroup);
-  map.addLayer(clusters);
+  if(pageDefinition.slideNumber === 1){
+    clusters = L.markerClusterGroup();
+    clusters.addLayer(featureGroup);
+    map.addLayer(clusters);
+  }else{
+    featureGroup.addTo(map);
+  }
   // build up a 'slide' given a page definition
   $("#title").text(pageDefinition.title);
   $("#content").text(pageDefinition.content);
@@ -91,6 +97,7 @@ var buildPage = function(pageDefinition) {
 var tearDown = function() {
   // remove all plotted data in prep for building the page with new filters etc
   map.removeLayer(clusters);
+  map.removeLayer(featureGroup)
 }
 
 
@@ -108,8 +115,7 @@ $(".nextbutton").click(nextPage)
 $(".previousbutton").click(prevPage)
 
 
-var myStyle;
-var geojsonMarkerOptions = {
+var myStyle1 = {
   radius: 4,
   fillColor: "#ff7800",
   color: "#000",
