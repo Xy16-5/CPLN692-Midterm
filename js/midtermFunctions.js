@@ -294,16 +294,6 @@ var tearDown = function() {
   map.removeLayer(featureGroup)
 }
 
-var slide5info = function(){
-  var inputval = {
-    Month: Number($('#text-input1').val()),
-    Day: Number($('#text-input2').val()),
-    fatal: Number(slider1.value),
-    injury: Number(slider2.value),
-  }
-  return inputval
-}
-
 
 
 
@@ -393,15 +383,7 @@ slider2.oninput = function() {
 
 $(".nextbutton").click(nextPage)
 $(".previousbutton").click(prevPage)
-$(".submitbutton").click(function(){
-  var inputval = {
-    Month: Number($('#text-input1').val()),
-    Day: Number($('#text-input2').val()),
-    fatal: Number(slider1.value),
-    injury: Number(slider2.value),
-  }
-  buildPage(slide5)
-})
+
 
 function slideclick (){
     tearDown();
