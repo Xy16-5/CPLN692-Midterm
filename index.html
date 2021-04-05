@@ -22,11 +22,11 @@
       <div id="filterslide2">
         <p>Choose crashes involved either death or injury</p>
         <div>
-          <input type="checkbox" id="death" name="death" onclick ="slide2click()" checked>
+          <input type="checkbox" id="death" name="death" onclick ="slideclick()" checked>
           <label for="death">Involved Death</label>
         </div>
         <div>
-          <input type="checkbox" id="injury" name="injury" onclick ="slide2click()">
+          <input type="checkbox" id="injury" name="injury" onclick ="slideclick()">
           <label for="injury">Involved Injury</label>
         </div>
       </div>
@@ -34,30 +34,82 @@
       <div input id="filterslide3">
         <p>Choose the specific weather conditions when crashes happened</p>
         <div>
-          <input type="radio" id="Rain" name="weather" onclick ="slide3click()" checked>
+          <input type="radio" id="Rain" name="weather" onclick ="slideclick()" checked>
           <label for="Rain">Rain</label>
         </div>
         <div>
-          <input type="radio" id="Sleet" name="weather" onclick ="slide3click()">
+          <input type="radio" id="Sleet" name="weather" onclick ="slideclick()">
           <label for="Sleet">Sleet (hail)</label>
         </div>
         <div>
-          <input type="radio" id="Snow" name="weather" onclick ="slide3click()">
+          <input type="radio" id="Snow" name="weather" onclick ="slideclick()">
           <label for="Snow">Snow</label>
         </div>
         <div>
-          <input type="radio" id="Fog" name="weather" onclick ="slide3click()">
+          <input type="radio" id="Fog" name="weather" onclick ="slideclick()">
           <label for="Fog">Fog</label>
         </div>
         <div>
-          <input type="radio" id="Rainfog" name="weather" onclick ="slide3click()">
+          <input type="radio" id="Rainfog" name="weather" onclick ="slideclick()">
           <label for="Rainfog">Rain and Fog</label>
         </div>
         <div>
-          <input type="radio" id="Sleetfog" name="weather" onclick ="slide3click()">
+          <input type="radio" id="Sleetfog" name="weather" onclick ="slideclick()">
           <label for="Sleetfog">Sleet and Fog</label>
         </div>
       </div>
+
+      <div input id="filterslide4">
+        <p>Choose a day of a week</p>
+        <div>
+          <input type="radio" id="monday" name="week" value = "1" onclick ="slideclick()" checked>
+          <label for="monday">Monday</label>
+        </div>
+        <div>
+          <input type="radio" id="tuesday" name="week" value = "2" onclick ="slideclick()">
+          <label for="tuesday">Tuesday</label>
+        </div>
+        <div>
+          <input type="radio" id="wednesday" name="week" value = "3" onclick ="slideclick()">
+          <label for="wednesday">Wednesday</label>
+        </div>
+        <div>
+          <input type="radio" id="thursday" name="week" value="4"  onclick ="slideclick()">
+          <label for="thursday">Thursday</label>
+        </div>
+        <div>
+          <input type="radio" id="friday" name="week" value="5" onclick ="slideclick()">
+          <label for="friday">Friday</label>
+        </div>
+        <div>
+          <input type="radio" id="saturday" name="week"  value="6" onclick ="slideclick()">
+          <label for="saturday">Saturday</label>
+        </div>
+        <div>
+          <input type="radio" id="sunday" name="week"  value="7" onclick ="slideclick()">
+          <label for="sunday">Sunday</label>
+        </div>
+    </div>
+
+    <div input id="filterslide5">
+      <div class="slidecontainer">
+        <p>Select the number of fatalities</p>
+        <input type="range" min="0" max="2" value="1" class="slider" id="fatalRange">
+        <p>Value: <span id="demo1"></span></p>
+        <p>Select the number of injury</p>
+        <input type="range" min="0" max="43" value="22" class="slider" id="injuryRange">
+        <p>Value: <span id="demo2"></span></p>
+      </div>
+      <div>
+        <p>Input the month and the day. For example: January, Monday</p>
+        <label for="mname">Month:</label>
+        <input type="text" id="mname" name="mname"><br>
+        <label for="wname">Day:</label>
+        <input type="text" id="wname" name="wname"><br><br>
+      </div>
+      
+
+    </div>
 
       <div>
         <label id='infotext' class='infobox'>Click on a crash to display its details here.</label>

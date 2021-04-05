@@ -153,15 +153,48 @@ var slide1 = {
   var slide4 = {
     slideNumber: 4,
     title: "Temporal Chracteristics of Crashes",
-    content:"In 2017, there are about 17% crashes are due to the adverse weather. Among them, 72.5% crashes happened when it was raining, and snow is the second common adverse weather when crashes happened. ",
+    content:"The crashes in 2017 happened evenly on seven days of a week. Crashes on Saturday (1407) and Sunday (1320) have happened slightly more than the weekdays, while the number of crashes on Tuesday is the least of 1173. The spatial distribution of crashes is not significantly different on each day. Adversely, most of the crashes happened around several important intersections, such as the Philadelphia City Hall.",
     bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
     filter: function(features){
-      
+      if (document.getElementById("monday").checked === true ){
+      return features.properties.day === 1
+    }else if (document.getElementById("tuesday").checked === true){
+      return features.properties.day === 2
+    }else if (document.getElementById("wednesday").checked === true){
+      return features.properties.day === 3
+    }else if (document.getElementById("thursday").checked === true){
+      return features.properties.day === 4
+    }else if (document.getElementById("friday").checked === true){
+      return features.properties.day === 5
+    }else if (document.getElementById("saturday").checked === true){
+      return features.properties.day === 6
+    }else if (document.getElementById("sunday").checked === true){
+      return features.properties.day === 7
+    }
+    },
+    style: function(features) {
+      switch(features.properties.day){
+        case 1 : return {fillColor: '#658EA9', stroke : false, fillOpacity: 0.7, radius: 4};
+        case 2 : return {fillColor: '#88B2CC', stroke : false, fillOpacity: 0.7, radius: 4};
+        case 3 : return {fillColor: '#E7D4C0', stroke : false, fillOpacity: 0.7, radius: 4};
+        case 4 : return {fillColor: '#E98973', stroke : false, fillOpacity: 0.7, radius: 4};
+        case 5 : return {fillColor: '#C4AC95', stroke : false, fillOpacity: 0.7, radius: 4};
+        case 6 : return {fillColor: '#008000', stroke : false, fillOpacity: 0.7, radius: 4};
+        case 7 : return {fillColor: '#FFD700', stroke : false, fillOpacity: 0.7, radius: 4};
+      }
     }
   };
 
+  var slide5 = {
+    slideNumber: 5,
+    title: "Crashes Look Up Table",
+    content:"You could find the crashes under several specific conditions",
+    bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]]
+  };
 
-  var slides =[slide1,slide2,slide3,slide4];
+
+
+  var slides =[slide1,slide2,slide3,slide4,slide5];
   var currentPage = 0
 
 
@@ -188,12 +221,28 @@ var showhide = function(currentPage){
   if (currentPage===1){
     $("#filterslide2").show()
     $("#filterslide3").hide()
+    $("#filterslide4").hide()
+    $("#filterslide5").hide()
   }else if (currentPage===2){
     $("#filterslide2").hide()
     $("#filterslide3").show()
-  }else{
+    $("#filterslide4").hide()
+    $("#filterslide5").hide()
+  }else if(currentPage===3){
     $("#filterslide2").hide()
     $("#filterslide3").hide() 
+    $("#filterslide4").show()
+    $("#filterslide5").hide()
+  }else if (currentPage===4){
+    $("#filterslide2").hide()
+    $("#filterslide3").hide() 
+    $("#filterslide4").hide()
+    $("#filterslide5").show()
+  } else{
+    $("#filterslide2").hide()
+    $("#filterslide3").hide() 
+    $("#filterslide4").hide()
+    $("#filterslide5").hide()
   }
 }
 
@@ -276,7 +325,7 @@ var generateinfo = function(feature) {
     Weather: feature.properties.weather
   };
   var monthlist =["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  var weeklist = ["Monday", "Tuesday", "Wednesday", "Turseday", "Friday"];
+  var weeklist = ["Monday", "Tuesday", "Wednesday", "Turseday", "Friday","Saturday","Sunday"];
   var weatherlist = ["No adverse conditions", "Rain", "Sleet (hail)", "Snow", "Fog", "Rain and fog", "Sleet and fog", "Other", "Unknown"];
   info.month = monthlist[info.month -1];
   info.day = weeklist[info.day -1];
@@ -306,19 +355,35 @@ var eachFeatureFunction = function(layer) {
   });
 };
 
+var slider1 = document.getElementById("fatalRange");
+var output1 = document.getElementById("demo1");
+output1.innerHTML = slider1.value;
+
+slider1.oninput = function() {
+  output1.innerHTML = this.value;
+}
+
+var slider2 = document.getElementById("injuryRange");
+var output2 = document.getElementById("demo2");
+output2.innerHTML = slider2.value;
+
+slider2.oninput = function() {
+  output2.innerHTML = this.value;
+}
 
 $(".nextbutton").click(nextPage)
 $(".previousbutton").click(prevPage)
 
-function slide2click (){
+function slideclick (){
     tearDown();
     buildPage(slides[currentPage]);
 }
 
-function slide3click (){
+function slideclick (){
   tearDown();
   buildPage(slides[currentPage]);
 }
+
 
 
 
