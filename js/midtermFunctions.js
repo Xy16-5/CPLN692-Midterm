@@ -88,12 +88,80 @@ var slide1 = {
 
   var slide3 = {
     slideNumber: 3,
-    title: "title 3 ",
-    content:"content3",
-    bbox: [[ 39.88682114233502,  -75.25772094726562],[40.02603705467397, -75.02151489257812]]
+    title: "Weather Conditions of Crashes",
+    content:"In 2017, there are about 17% crashes are due to the adverse weather. Among them, 72.5% crashes happened when it was raining, and snow is the second common adverse weather when crashes happened. ",
+    bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
+    filter: function(features){
+      if (document.getElementById("Rain").checked === true ){
+        return features.properties.weather === 2
+      }else if (document.getElementById("Sleet").checked === true){
+        return features.properties.weather === 3
+      }else if (document.getElementById("Snow").checked === true){
+        return features.properties.weather === 4
+      }else if (document.getElementById("Fog").checked === true){
+        return features.properties.weather === 5
+      }else if (document.getElementById("Rainfog").checked === true){
+        return features.properties.weather === 6
+      }else if (document.getElementById("Sleetfog").checked === true){
+        return features.properties.weather === 7
+      }
+    },
+    style: function(features){
+      if(features.properties.weather === 2){
+        return {
+          color: "DarkBlue",
+          radius: 2,
+          fillOpacity: 0.5
+        }
+      }else if (features.properties.weather === 3){
+        return {
+          color: "RoyalBlue",
+          radius: 4,
+          fillOpacity: 0.85
+        }
+      }else if (features.properties.weather ===4){
+        return {
+          color: "lightgrey",
+          radius: 3,
+          fillOpacity: 0.85
+        }
+      }else if (features.properties.weather ===5){
+        return {
+          color: "DimGray",
+          radius: 4,
+          fillOpacity: 0.85
+        }
+      }else if (features.properties.weather ===6){
+        return {
+          color: "DarkBlue",
+          fillColor: "DimGray",
+          radius: 4,
+          fillOpacity: 0.85
+        }
+      }else if (features.properties.weather ===7){
+        return {
+          color: "RoyalBlue",
+          fillColor: "DimGray",
+          radius: 4,
+          fillOpacity: 0.85
+        }
+      }
+    }
   };
 
-  var slides =[slide1,slide2,slide3];
+
+  var slide4 = {
+    slideNumber: 4,
+    title: "Temporal Chracteristics of Crashes",
+    content:"In 2017, there are about 17% crashes are due to the adverse weather. Among them, 72.5% crashes happened when it was raining, and snow is the second common adverse weather when crashes happened. ",
+    bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
+    filter: function(features){
+      
+    }
+  };
+
+
+  var slides =[slide1,slide2,slide3,slide4];
   var currentPage = 0
 
 
@@ -101,6 +169,7 @@ var slide1 = {
 var nextPage = function() {
   // event handling for proceeding forward in slideshow
   tearDown();
+  $('#infotext').show()
   var nextPage = currentPage + 1 ;
   currentPage = nextPage;
   buildPage(slides[nextPage]);
@@ -118,8 +187,13 @@ var prevPage = function() {
 var showhide = function(currentPage){
   if (currentPage===1){
     $("#filterslide2").show()
+    $("#filterslide3").hide()
+  }else if (currentPage===2){
+    $("#filterslide2").hide()
+    $("#filterslide3").show()
   }else{
     $("#filterslide2").hide()
+    $("#filterslide3").hide() 
   }
 }
 
@@ -132,6 +206,7 @@ var buildPage = function(pageDefinition) {
       return new L.CircleMarker(latlng)
     }
   });
+  featureGroup.eachLayer(eachFeatureFunction);
 
   if(pageDefinition.slideNumber === 1){
     clusters = L.markerClusterGroup();
@@ -192,6 +267,44 @@ var injurysum = function(obj){
   return injury
 }
 
+var generateinfo = function(feature) {
+  var info = {
+    month: feature.properties.month,
+    day: feature.properties.day ,
+    Fatal: feature.properties.fatal ,
+    Injury: feature.properties.injury,
+    Weather: feature.properties.weather
+  };
+  var monthlist =["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var weeklist = ["Monday", "Tuesday", "Wednesday", "Turseday", "Friday"];
+  var weatherlist = ["No adverse conditions", "Rain", "Sleet (hail)", "Snow", "Fog", "Rain and fog", "Sleet and fog", "Other", "Unknown"];
+  info.month = monthlist[info.month -1];
+  info.day = weeklist[info.day -1];
+  info.Weather = weatherlist[info.Weather - 1]
+  return info;
+};
+
+
+var displayinfo = function(info) {
+  $('#infotext').hide();
+  $('#infotable').show();
+  $('#month').text(info.month);
+  $('#day').text(info.day);
+  $('#fatalnumber').text(info.Fatal);
+  $('#injurynumber').text(info.Injury);
+  $('#weather').text(info.Weather);
+};
+
+
+
+
+var eachFeatureFunction = function(layer) {
+  layer.on('click', function (event) {
+    var infotable = generateinfo(event.target.feature)
+    displayinfo(infotable);
+    console.log(infotable);
+  });
+};
 
 
 $(".nextbutton").click(nextPage)
@@ -201,6 +314,15 @@ function slide2click (){
     tearDown();
     buildPage(slides[currentPage]);
 }
+
+function slide3click (){
+  tearDown();
+  buildPage(slides[currentPage]);
+}
+
+
+
+
 
 
 

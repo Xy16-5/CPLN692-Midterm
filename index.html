@@ -29,11 +29,68 @@
           <input type="checkbox" id="injury" name="injury" onclick ="slide2click()">
           <label for="injury">Involved Injury</label>
         </div>
-        
       </div>
-      
 
+      <div input id="filterslide3">
+        <p>Choose the specific weather conditions when crashes happened</p>
+        <div>
+          <input type="radio" id="Rain" name="weather" onclick ="slide3click()" checked>
+          <label for="Rain">Rain</label>
+        </div>
+        <div>
+          <input type="radio" id="Sleet" name="weather" onclick ="slide3click()">
+          <label for="Sleet">Sleet (hail)</label>
+        </div>
+        <div>
+          <input type="radio" id="Snow" name="weather" onclick ="slide3click()">
+          <label for="Snow">Snow</label>
+        </div>
+        <div>
+          <input type="radio" id="Fog" name="weather" onclick ="slide3click()">
+          <label for="Fog">Fog</label>
+        </div>
+        <div>
+          <input type="radio" id="Rainfog" name="weather" onclick ="slide3click()">
+          <label for="Rainfog">Rain and Fog</label>
+        </div>
+        <div>
+          <input type="radio" id="Sleetfog" name="weather" onclick ="slide3click()">
+          <label for="Sleetfog">Sleet and Fog</label>
+        </div>
+      </div>
 
+      <div>
+        <label id='infotext' class='infobox'>Click on a crash to display its details here.</label>
+      </div>
+      <br><br>
+  
+      <div id='infotable'>
+        <table>
+        <tr>
+          <th>Attribute</th>
+          <th>Value</th>
+        </tr>
+        <tr>
+          <td>Month</td>
+          <td id='month'></td>
+        </tr>
+        <tr>
+          <td>Day</td>
+          <td id='day'></td>
+        </tr>
+        <tr>
+          <td>Fatal Number</td>
+          <td id='fatalnumber'></td>
+        </tr>
+        <tr>
+          <td>Injury Number</td>
+          <td id='injurynumber'></td>
+        </tr>
+        <tr>
+          <td>Weather</td>
+          <td id='weather'></td>
+        </tr>
+      </table>
       </div>
     </div>
     <!-- Map -->
