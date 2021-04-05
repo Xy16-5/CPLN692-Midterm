@@ -189,7 +189,16 @@ var slide1 = {
     slideNumber: 5,
     title: "Crashes Look Up Table",
     content:"You could find the crashes under several specific conditions",
-    bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]]
+    bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
+    filter: function (features){
+      var inputval = {
+        Month: Number($('#text-input1').val()),
+        Day: Number($('#text-input2').val()),
+        fatal: Number(slider1.value),
+        injury: Number(slider2.value),
+      }
+      return features.properties.fatal === inputval.fatal && features.properties.injury <=inputval.injury && features.properties.month === inputval.month &&features.properties.day === inputval.day
+    }
   };
 
 
@@ -285,6 +294,16 @@ var tearDown = function() {
   map.removeLayer(featureGroup)
 }
 
+var slide5info = function(){
+  var inputval = {
+    Month: Number($('#text-input1').val()),
+    Day: Number($('#text-input2').val()),
+    fatal: Number(slider1.value),
+    injury: Number(slider2.value),
+  }
+  return inputval
+}
+
 
 
 
@@ -300,6 +319,7 @@ var clusters;
 var markerlist;
 var fatal = 0;
 var injury = 0;
+var inputval;
 
 var fatalsum = function(obj){
 
@@ -373,22 +393,42 @@ slider2.oninput = function() {
 
 $(".nextbutton").click(nextPage)
 $(".previousbutton").click(prevPage)
+$(".submitbutton").click(function(){
+  var inputval = {
+    Month: Number($('#text-input1').val()),
+    Day: Number($('#text-input2').val()),
+    fatal: Number(slider1.value),
+    injury: Number(slider2.value),
+  }
+  buildPage(slide5)
+})
 
 function slideclick (){
     tearDown();
     buildPage(slides[currentPage]);
 }
 
-function slideclick (){
-  tearDown();
-  buildPage(slides[currentPage]);
+
+
+
+$('#text-input1').val('1');
+$('#text-input2').val('1');
+
+
+
+$('#text-input1').prop('disabled',false);
+$('#text-input2').prop('disabled',false);
+
+
+var filterfunc = function (features){
+  var inputval = {
+    Month: Number($('#text-input1').val()),
+    Day: Number($('#text-input2').val()),
+    fatal: Number(slider1.value),
+    injury: Number(slider2.value),
+  }
+  return features.properties.fatal === inputval.fatal && features.properties.injury <=inputval.injury && features.properties.month === inputval.month &&features.properties.day === inputval.day
 }
-
-
-
-
-
-
 
 
 
