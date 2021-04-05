@@ -50,32 +50,38 @@ var slide1 = {
 
   var slide2 = {
     slideNumber: 2,
-    title: "Fatal Crashes",
-    content:"content2",
+    title: "Fatal and Injury Crashes",
+    content:"If you check Involved Death, the map will show the crashes that only involved fatal accidents; if you check Involved Injury, the map will show the crashes that only involved injury accidents; and if you check both, the map will show the crashes that invovle both fatal and injury. Click on them and find out the number of fatalities and injuries in the accident. ",
     bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
     filter: function(features){ 
       if (document.getElementById("death").checked === true && document.getElementById("injury").checked === false){
-        return features.properties.fatal >0 
+        return features.properties.fatal >0 && features.properties.injury === 0 
       }else if(document.getElementById("death").checked === false && document.getElementById("injury").checked === true){
-        return features.properties.injury >0 
+        return features.properties.injury >0 && features.properties.fatal === 0
       }else if (document.getElementById("death").checked === true && document.getElementById("injury").checked === true){
-        return features.properties.fatal >0 ||features.properties.injury >0 
+        return features.properties.fatal >0 && features.properties.injury >0 
       }
       
     },
     style: function(features){
-      if (features.properties.fatal === 1){
+      if(features.properties.injury > 0 && features.properties.fatal === 0){
+        return{
+          color: "orange",
+          radius: 1+(features.properties.injury-1) ,
+          fillOpacity: 0.2
+        }
+      }else if (features.properties.fatal >0 && features.properties.injury === 0 ){
         return{
           color: "red",
-          radius: 8,
+          radius: 6+(features.properties.fatal-1)*2,
           fillOpacity: 0.85
         }
-      }else if(features.properties.fatal === 2){
+      }else if (features.properties.injury > 0 && features.properties.fatal > 0){
         return{
           color: "darkred",
-          radius: 12,
+          radius: 6+(features.properties.fatal+features.properties.injury-2)*2,
           fillOpacity: 0.85
-        }
+        } 
       }
     }
   };
@@ -158,6 +164,8 @@ var tearDown = function() {
 
 
 
+
+
 /*================
 Data Processing
 ==================*/
@@ -188,6 +196,11 @@ var injurysum = function(obj){
 
 $(".nextbutton").click(nextPage)
 $(".previousbutton").click(prevPage)
+
+function slide2click (){
+    tearDown();
+    buildPage(slides[currentPage]);
+}
 
 
 
