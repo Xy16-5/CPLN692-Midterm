@@ -191,13 +191,7 @@ var slide1 = {
     content:"You could find the crashes under several specific conditions",
     bbox: [[39.874438536988166, -75.26596069335938],[40.10486150812275, -74.88418579101562]],
     filter: function (features){
-      var inputval = {
-        Month: Number($('#text-input1').val()),
-        Day: Number($('#text-input2').val()),
-        fatal: Number(slider1.value),
-        injury: Number(slider2.value),
-      }
-      return features.properties.fatal === inputval.fatal && features.properties.injury <=inputval.injury && features.properties.month === inputval.month &&features.properties.day === inputval.day
+    return true
     }
   };
 
@@ -256,7 +250,6 @@ var showhide = function(currentPage){
 }
 
 var buildPage = function(pageDefinition) {
-
   featureGroup = L.geoJson(parsedData,{
     filter: pageDefinition.filter,
     style: pageDefinition.style ,
@@ -286,6 +279,42 @@ var buildPage = function(pageDefinition) {
   if (currentPage === 0){
     $(".previousbutton").prop("disabled", true)
   }else {$(".previousbutton").prop("disabled", false)}
+}
+
+
+
+
+var buildlastPage =  function(){
+  tearDown();
+  var inputval = {
+    Month: Number($('#text-input1').val()),
+    Day: Number($('#text-input2').val()),
+    fatal: Number(slider1.value),
+    injury: Number(slider2.value),
+  }
+  console.log(inputval);
+  var fatal =inputval.fatal;
+  var injury = inputval.injury;
+  var month = inputval.Month;
+  var day = inputval.Day
+  featureGroup = L.geoJson(parsedData,{
+    style: function(features){
+      return {
+        color: "red",
+        radius: 8 
+      }
+    },
+    filter: function (features){ 
+      if(features.properties.fatal === fatal && features.properties.injury<= injury && features.properties.month === month &&features.properties.day === day){
+        return true
+      }
+    },
+    pointToLayer: function(feature,latlng){
+      return new L.CircleMarker(latlng)
+    }
+  });
+  featureGroup.eachLayer(eachFeatureFunction);
+  featureGroup.addTo(map);
 }
 
 var tearDown = function() {
@@ -402,15 +431,7 @@ $('#text-input1').prop('disabled',false);
 $('#text-input2').prop('disabled',false);
 
 
-var filterfunc = function (features){
-  var inputval = {
-    Month: Number($('#text-input1').val()),
-    Day: Number($('#text-input2').val()),
-    fatal: Number(slider1.value),
-    injury: Number(slider2.value),
-  }
-  return features.properties.fatal === inputval.fatal && features.properties.injury <=inputval.injury && features.properties.month === inputval.month &&features.properties.day === inputval.day
-}
+
 
 
 
@@ -419,6 +440,9 @@ $(document).ready(function() {
   $.ajax(dataset).done(function(data) {
     parsedData = JSON.parse(data);
     buildPage(slides[currentPage]); 
+    $('.submitbutton').click(function(){
+      buildlastPage();
+    })
     var crashnumber = parsedData.features.length;
     console.log("Total Crashes in 2017: ", crashnumber);
     fatalsum(parsedData.features);
